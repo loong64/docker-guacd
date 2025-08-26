@@ -6,7 +6,7 @@ ARG PREFIX_DIR=/opt/guacamole
 
 ARG BUILD_DIR=/tmp/guacamole-server
 
-ARG FREERDP_VERSION=3
+ARG FREERDP_VERSION=2
 
 ARG WITH_OPENSSL='OpenSSL_1(\_\d+\w*)+'
 ARG WITH_FREERDP="${FREERDP_VERSION}(\.\d+)+"
@@ -138,9 +138,9 @@ ARG VERSION=main
 RUN set -ex \
     && git clone -b ${VERSION} --depth=1 https://github.com/apache/guacamole-server ${BUILD_DIR} \
     && rm -f ${BUILD_DIR}/src/guacd-docker/bin/build-all.sh \
-    && wget -O ${BUILD_DIR}/src/guacd-docker/bin/build-all.sh https://github.com/wojiushixiaobai/guacamole-server/raw/4f2704ce642d3a8a31d0d92878a92e94a92187dc/src/guacd-docker/bin/build-all.sh \
     && wget -O ${BUILD_DIR}/src/guacd-docker/bin/list-dependencies.sh https://github.com/wojiushixiaobai/guacamole-server/raw/601ee1f81945fd5c1be935a200035c09bbaa9123/src/guacd-docker/bin/list-dependencies.sh \
-    && sed -i 's@make check && @@g' ${BUILD_DIR}/src/guacd-docker/bin/build-all.sh \
+    && wget -O ${BUILD_DIR}/src/guacd-docker/bin/build-all.sh https://github.com/loong64/docker-guacd/raw/refs/heads/main/debian/trixie/build-all.sh \
+    && wget -O /tmp/freerdp-loong64.patch https://github.com/loong64/docker-guacd/raw/refs/heads/main/debian/trixie/freerdp-loong64.patch \
     && chmod 755 ${BUILD_DIR}/src/guacd-docker/bin/*.sh
 
 ENV PATH=/usr/lib/ccache:${PATH}
